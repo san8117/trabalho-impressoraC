@@ -1,47 +1,118 @@
-Conexão com a impressora de cupons fiscais.
+# 🖨️ Integração C++ com Impressora Elgin
+## Sistema de Conexão e Impressão de Cupons Fiscais
 
-Integrantes: Guilherme Oliveira de Santana, Kaue Bueno, Lucas Soares, Henrique Soares, Pedro Henrique Gomes.
+# 📘 Sobre o Projeto
 
-O código foi construído na linguagem C++ na IDE Dev C++.
+Este projeto foi desenvolvido com o objetivo de criar uma aplicação em C++ capaz de se comunicar com impressoras fiscais da Elgin, permitindo realizar operações como:
 
-Ele funciona da seguinte maneira: criamos dentro da função exibirMenu(), que apresenta ao usuário um menu com 11 possibilidades, que será chamado em um while que nós iremos explicar mais para frente, sendo que a última opção fecha a conexão com a impressora. A primeira opção chamada, configurar conexão, configura a conexão da máquina com a impressora. Quando selecionamos essa opção, ela chama a função configurarConexao(), onde ela pede para o usuário digitar os parâmetros que serão necessários para realizar a conexão. Dentro desta primeira função utilizamos as variáveis base que já estavam criadas pelo professor, são elas: “g_tipo”, “g_modelo”, “g_conexao” e o “g_parametro”, que está recebendo 0 como valor padrão. Após todo esse preenchimento feito pelo usuário, nós printamos na tela que os dados para conexão estão salvos.
+- Configurar conexão
 
-A segunda opção é o Abrir conexão com a impressora, que apesar de nós termos falado sobre configurar a conexão, não abrimos ela ainda. Nesta função nós criamos uma variável “ret” que vai receber a função informada na documentação passada para nós no site da Elgin, que é chamada: “AbreConexaoImpressora()”. Dentro do parêntese, a função vai receber os parâmetros que foram informados nas variáveis que foram preenchidas na função configurarConexao(). Após isso, a primeira coisa que fizemos foi testar se a conexão foi realmente aberta através de um if testando se o retorno for igual a 0. Se o retorno for igual a 0, a conexão foi aberta com sucesso; se não, é porque houve um retorno com um número diferente. Uma coisa que vale ressaltar é que antes mesmo deste if acontecer, tem uma outra condição que testa se a variável g_conectada for igual a 0. Se for igual a 0, significa que a conexão não está aberta; caso seja diferente, significa que a conexão já está aberta. Isso é quando testarmos novamente a abertura depois de nós já termos testado.
+- Abrir e fechar comunicação
 
-Uma observação é que essa mesma estrutura foi utilizada em todas as funções seguintes, o que facilitou o entendimento do projeto proposto pelo professor.
+- Imprimir texto, QR Code, código de barras
 
-A terceira função é a de fecharConexao(), uma função que será ativada quando o usuário digitar o número 0 no menu apresentado. Lembra que nós dissemos que a mesma estrutura utilizada na segunda função seria utilizada nas próximas? Ela é uma delas, só muda a lógica. Neste caso, testamos se a conexão está ligada através deste if: if(g_conectada == 1). Se ela estiver igual a 1, significa que ela está ligada; caso for diferente de 1, significa que ela está desligada. Neste caso, se ela estiver ligada, criamos novamente uma variável ret que vai receber a função chamada: “FechaConexaoImpressora()”. Neste caso, esta função não pede nenhum parâmetro. E depois disso nós criamos um if testando se a variável ret for igual a 0. Se ela for igual a 0, aquela variável g_conectada que estava ligada, ou seja, estava com o número 1 armazenado dentro dela, agora vai receber 0, ou seja, ela vai ser desligada, e mandamos uma mensagem dizendo que a conexão foi fechada com sucesso. Se o ret for diferente de zero, informamos que deu um erro e não foi possível fechar a conexão. Uma parte engraçada é que, se a conexão já está fechada e queremos fechá-la novamente, adicionamos uma mensagem dizendo: “Já tá fechada seu cabeçudo”.
+- Imprimir XML SAT e XML de Cancelamento
 
-A quarta função que está no código é chamada de imprimirTexto(). Nela criamos três variáveis que receberão informações que o usuário irá enviar, são elas: char dados, int posicao, int estilo e int tamanho. Como o professor já nos enviou os parâmetros para teste, então tudo ficou mais fácil. Agora é só receber a função com os parâmetros pedidos que ficaria assim: int ret = ImpressaoTexto("Teste", 1, 4, 0); Voltamos à lógica da segunda função: se o ret for igual a 0, a gente printa na tela que a impressão deu certo e, após esta mensagem, chamamos as funções de avançar AvancaPapel(2) e Corte(2). Se for diferente, dizemos que deu erro na impressão. Uma coisa que é importante ressaltar é que mais uma vez o teste da variável g_conectada está presente: se for igual a 1, significa que a conexão está aberta; caso for diferente, nós mostramos na tela a seguinte mensagem: Não tem nenhuma conexão em aberto.
+- Abrir gavetas
 
-A quinta função é chamada de imprimirQRCode(). Dentro dela já iniciamos a criação de três variáveis que são elas: char dados[20], int tamanho, int nivelCorrecao. Uma observação referente ao número vinte dentro dos colchetes significa a quantidade de caracteres que a variável char comporta. Após a criação, testamos se a conexão está aberta. Se ela estiver aberta, recebemos na variável ret a função ImpressaoQRCode("Teste de impressao", 6, 4), já com os parâmetros pedidos pelo professor para testagem. Agora fazemos o teste: se o ret for igual a 0, dizemos ao usuário que a impressão foi feita com sucesso e chamamos dentro deste if as funções AvancaPapel(2), que vai movimentar o papel, e a função Corte(2), que vai cortar o papel.
+- Emitir sinal sonoro
 
-A sexta função é chamada de imprimirCodigoBarras(). Dentro dela não criamos nenhuma variável. Continuamos com a mesma estrutura de teste para saber se ainda a conexão está aberta. Se ela estiver aberta, recebemos na variável ret a função junto com os seus parâmetros de teste: ImpressaoCodigoBarras(8, "{A012345678912", 100, 2, 3). Testamos se o ret está igual a 0; se sim, enviamos uma mensagem dizendo que a impressão foi um sucesso e chamamos novamente aquelas funções de avançar o papel e cortar ele.
+O trabalho faz parte da disciplina de Programação Orientada a Objetos.
 
-A sétima função é chamada de imprimirXMLSAT(). Após o teste da conexão, criamos a variável dados dentro desta função tornando ela como char, e esta variável recebe o caminho que é o path da pasta do usuário, ficando assim no nosso código: "path=C:\Users\oliveira_santana01\Downloads\TrabalhoAtualizado\TrabalhoAtualizado\XMLSAT.xml". E aquela variável ret não foi esquecida: após salvarmos o caminho dentro da variável dados, a variável ret recebe a função de imprimir o XML e a variável de dados que está armazenando o path, ficando assim: int ret = ImprimeXMLSAT(dados, 0); Após isso, realizamos o mesmo teste com a variável ret: se ela for igual a 0, dizemos que a impressão foi um sucesso e chamamos as funções de avançar o papel e cortar ele; caso não seja igual a 0, mostramos na tela que deu erro no processo.
+# 🧰 Tecnologias Utilizadas
 
-A oitava função chamada de imprimirXMLCancelamentoSAT() tem uma lógica muito parecida com a sétima função. Depois de verificarmos que a conexão está aberta, criamos a variável const char* assQRCode, e ela vai ter o mesmo intuito daquela variável dados que foi criada na última função, que no caso é de receber o caminho da pasta, ficando assim: const char* assQRCode = "path=C:\Users\oliveira_santana01\Downloads\TrabalhoAtualizado\TrabalhoAtualizado\CANC_SAT.xml"; O que muda neste recebimento é que no final não recebemos o XMLSAT.xml, mas sim o CANC_SAT.xml. Após isso, aquela variável ret vai receber a função de imprimir o xmlsat. Junto com esta função vem como parâmetros aquela variável assQRCode e um link de assinatura que foi enviado pelo próprio professor, ficando assim:
-int ret = ImprimeXMLCancelamentoSAT(assQRCode, "Q5DLkpdRijIRGY6YSSNsTWK1TztHL1vD0V1Jc4spo/CEUqICEb9SFy82ym8EhBRZ""jbh3btsZhF+sjHqEMR159i4agru9x6KsepK/q0E2e5xlU5cv3m1woYfgHyOkWDNc""SdMsS6bBh2Bpq6s89yJ9Q6qh/J8YHi306ce9Tqb/drKvN2XdE5noRSS32TAWuaQE""Vd7u+TrvXlOQsE3fHR1D5f1saUwQLPSdIv01NF6Ny7jZwjCwv1uNDgGZONJdlTJ6""p0ccqnZvuE70aHOI09elpjEO6Cd+orI7XHHrFCwhFhAcbalc+ZfO5b/+vkyAHS6C""YVFCDtYR9Hi5qgdk31v23w==", 0);
-Após isso, fazemos o teste da variável ret: se ela for igual a 0, printamos na tela que deu certo a impressão e chamamos as funções de avançar o papel e cortar o papel; se não for igual a 0, dizemos que ocorreu um erro.
+- C++
 
-A nona função é chamada de abrirGavetaElginOpc(). Nela, não criamos nenhuma variável. Após o teste de conexão se está aberta ou não, criamos a variável ret e ela vai receber a função de abrir a gaveta com os seus parâmetros dentro do parêntese, ficando assim: int ret = AbreGavetaElgin(1, 50, 50); Após isso, testamos se a variável ret é igual a 0; se sim, mostramos na tela que a gaveta abriu; se não, mostramos na tela a mensagem de erro na tentativa de abrir a gaveta.
+- Dev-C++ (IDE utilizada)
 
-A décima função é chamada de abrirGavetaOpc(). Nesta função, a lógica é a mesma comparada à última que acabamos de falar. O que muda é o recebimento dos parâmetros e a função, que é diferente. Neste caso, a variável ret irá receber a função de abrir a gaveta opc com os seus parâmetros, ficando assim: int ret = AbreGaveta(1, 5, 10); Depois deste recebimento, realizamos o teste da variável ret. Se for igual a 0, dizemos que a gaveta abriu com sucesso; e se for diferente de 0, dizemos que ocorreu um erro na tentativa de abertura da gaveta.
+- SDK da Elgin para Impressoras
 
-A décima primeira função foi a que mais nos chamou a atenção, porque ela emite um som na impressora. Ela é chamada de emitirSinalSonoro(void). Após o teste de conexão, criamos a variável ret e ela recebe a função de emitir o som e os seus parâmetros, ficando assim: int ret = SinalSonoro(4, 50, 5); Testamos a variável ret: se for igual a 0, ela vai dizer que emitiu o sinal sonoro; e se não for igual a 0, vai dizer que ocorreu um erro.
+- Funções ESC/POS
 
-Após toda essa construção de cada função, dentro do while chamamos cada uma delas através de um switch case que vai se conectar com aquele menu. Antes do switch case, dentro do while chamamos a função exibirMenu e após isso criamos o switch case, e cada número das opções apresentadas no menu irá chamar uma determinada função, ficando assim:
+- Comunicação com periféricos (gaveta, corte de papel etc.)
 
-Exemplo:
+# 📁 Estrutura do Projeto
+- /src       → Código-fonte principal (funções de impressão e conexão)
+- /docs      → Documentação de referência e materiais adicionais
+- /lib       → Bibliotecas da Elgin utilizadas
+- /examples  → Arquivos XML e testes de impressão
 
-switch (opcao) {
-    case 1:
-        configurarConexao();
-        break;
-    case 2:
-        abrirConexao();
-        break;
-    case 3:
+ 
+# ⚙️ Instalação e Execução
+## 🔽 1. Baixar o Projeto
 
+1. Acesse o repositório do projeto.
 
-Tudo isso foi construído dentro da função int main.
+2. Clique em Code.
+
+3. Selecione Download ZIP.
+
+4. Aguarde o download finalizar.
+
+## 📦 2. Extrair o Arquivo ZIP
+
+1. Localize o arquivo baixado.
+
+2. Clique com o botão direito → Extrair aqui / Extract All.
+
+3. Uma nova pasta será criada com o conteúdo do projeto.
+
+## 🧭 3. Abrir no Dev-C++
+
+1. Abra o Dev-C++.
+
+2. Vá em File → Open Project.
+
+3. Selecione o arquivo .dev ou o diretório onde estão os .cpp.
+
+4. Aguarde o carregamento.
+
+5. Abra o arquivo main.cpp.
+
+6. Clique no ícone ► Run para compilar e executar.
+
+## 🧪 Testes
+
+O projeto inclui funcionalidades que podem ser testadas via menu interativo:
+
+- Configuração e abertura de conexão
+
+- Impressão de texto simples
+
+- Impressão de QRCode
+
+- Impressão de Código de Barras
+
+- Impressão de XML SAT
+
+- Impressão de XML de Cancelamento
+
+- Abertura de gaveta (Elgin e opcional)
+
+- Corte de papel
+
+- Sinal sonoro da impressora
+
+Cada teste utiliza funções originais do SDK Elgin para validação operacional.
+
+## 📚 Documentação Adicional
+
+- Documentação oficial da Elgin (SDK)
+
+- Exemplos de funções ESC/POS
+
+- Referência para impressão de XML SAT
+
+- Manual da impressora compatível utilizada
+
+## 👥 Autores
+
+- Guilherme Oliveira de Santana
+
+- Henrique Soares
+
+- Kaue Bueno
+
+- Lucas Soares
+
+- Pedro Henrique Gomes
