@@ -6,7 +6,7 @@
 /* ======================= Config DLL ======================= */
 static HMODULE g_hDll = NULL;
 
-/* Convenção de chamada (Windows): __stdcall */
+/* Conven??o de chamada (Windows): __stdcall */
 #ifndef CALLCONV
 #  define CALLCONV WINAPI
 #endif
@@ -45,7 +45,7 @@ static InicializaImpressora_t         InicializaImpressora         = NULL;
 static LimpaBufferModoPagina_t        LimpaBufferModoPagina         = NULL;
 
 
-/* ======================= Configuração ======================= */
+/* ======================= Configura??o ======================= */
 static int   g_tipo      = 1;
 static char  g_modelo[64] = "i9";
 static char  g_conexao[128] = "USB";
@@ -57,7 +57,7 @@ static int   g_conectada = 0;
     do {                                                                         \
         name = (name##_t)GetProcAddress((HMODULE)(h), #name);                    \
         if (!(name)) {                                                           \
-            fprintf(stderr, "Falha ao resolver símbolo %s (erro=%lu)\n",         \
+            fprintf(stderr, "Falha ao resolver s?mbolo %s (erro=%lu)\n",         \
                     #name, GetLastError());                                      \
             return 0;                                                            \
         }                                                                        \
@@ -68,7 +68,7 @@ static void flush_entrada(void) {
     while ((c = getchar()) != '\n' && c != EOF) { }
 }
 
-/* ======================= Funções para manipular a DLL ======================= */
+/* ======================= Fun??es para manipular a DLL ======================= */
 static int carregarFuncoes(void)
 {
     g_hDll = LoadLibraryA("E1_Impressora01.dll");
@@ -103,15 +103,15 @@ static void liberarBiblioteca(void)
     }
 }
 
-/* ======================= Funções a serem implementadas pelos alunos ======================= */
+/* ======================= Fun??es a serem implementadas pelos alunos ======================= */
 
 static void exibirMenu()
 {
-    // TODO: implementar exibição do menu principal com as opções de impressão
+    // TODO: implementar exibi??o do menu principal com as op??es de impress?o
     
     int opcao;
     
-    printf("MENU DA IMPRESSORA\n");
+    printf("\n=================MENU DA IMPRESSORA=================\n\n");
     
     printf("1 -Configurar Conexao\n");
     printf("2 -Abrir Conexao\n");
@@ -123,17 +123,17 @@ static void exibirMenu()
     printf("8- Abrir Gaveta Elgin\n");
     printf("9- Abrir Gaveta\n");
     printf("10- Sinal Sonoro\n");
-    printf("0- Fechar Conexao e Sair\n");
+    printf("0- Fechar Conexao e Sair\n\n");
      
     
 }
 
 static void configurarConexao(void)
 {
-    // TODO: pedir ao usuário tipo, modelo, conexão e parâmetro
+    // TODO: pedir ao usu?rio tipo, modelo, conex?o e par?metro
    
     
-    printf("Escolha o tipo de conexao:\n");
+    printf("\nEscolha o tipo de conexao:\n");
     printf("1 - USB\n");
     printf("2 - RS232\n");
     printf("3 - TCP/IP\n");
@@ -142,14 +142,14 @@ static void configurarConexao(void)
     
     scanf("%i", &g_tipo);
     
-    printf("Escolha o modelo:\n");
+    printf("\nEscolha o modelo:\n");
     printf("i7\n");
     printf("i8\n");
     printf("i9\n");
     
     scanf("%s", &g_modelo);
     
-    printf("Digite qual e tipo de conexao\n");
+    printf("\nDigite qual e tipo de conexao\n");
     printf("1 - USB\n");
     printf("2 - RS232 \n");
     
@@ -255,7 +255,7 @@ static void imprimirQRCode(void)
 		printf("Nao tem nenhuma conexao em aberto\n");
 	}
 	
-    // TODO: solicitar conteúdo do QRCode e chamar ImpressaoQRCode(texto, 6, 4)
+    // TODO: solicitar conte?do do QRCode e chamar ImpressaoQRCode(texto, 6, 4)
     // incluir AvancaPapel e Corte no final
 }
 
@@ -288,7 +288,7 @@ static void imprimirXMLSAT(void)
 	//char dados[300];
        if(g_conectada == 1){
     	
-    	const char* dados = "path=C:\\Users\\soares_cardoso\\Desktop\\trabalho-impressoraC-main\\TrabalhoAtualizado\\XMLSAT.xml";
+    	const char* dados = "path=C:./XMLSAT.xml";
 		int ret = ImprimeXMLSAT(dados, 0);
 		
 	
@@ -317,7 +317,7 @@ static void imprimirXMLCancelamentoSAT(void)
        
        if(g_conectada == 1){
     	
-    	const char* assQRCode = "path=C:\\Users\\soares_cardoso\\Desktop\\trabalho-impressoraC-main\\TrabalhoAtualizado\\CANC_SAT.xml";
+    	const char* assQRCode = "path=C:./CANC_SAT.xml";
 		
 		int ret = ImprimeXMLCancelamentoSAT(assQRCode, "Q5DLkpdRijIRGY6YSSNsTWK1TztHL1vD0V1Jc4spo/CEUqICEb9SFy82ym8EhBRZ"
         "jbh3btsZhF+sjHqEMR159i4agru9x6KsepK/q0E2e5xlU5cv3m1woYfgHyOkWDNc"
@@ -415,7 +415,7 @@ static void emitirSinalSonoro(void)
     // TODO: chamar SinalSonoro(4, 50, 5)
 }
 
-/* ======================= Função principal ======================= */
+/* ======================= Fun??o principal ======================= */
 int main(void)
 {
 	int escolha;
@@ -425,7 +425,7 @@ int main(void)
    	int opcao;
     while (1) {
         exibirMenu();
-        printf("Escolha a opcao desejada:\n\n");
+        	printf("Escolha a opcao desejada:\n");
         scanf("%i", &opcao);
         
         if(opcao == 0){
@@ -471,8 +471,7 @@ int main(void)
         	
         
         
-        //construir o menu e chamar as funçoes aqui!!!             
+        //construir o menu e chamar as fun?oes aqui!!!             
         
     }
 }
-
